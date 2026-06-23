@@ -10,11 +10,7 @@ const sectionFiles = [
   "sections/contact.html",
 ];
 
-const sections = Object.fromEntries(
-  sectionFiles.map((file) => [file, fs.readFileSync(file, "utf8").trim()])
-);
+const template = fs.readFileSync("index.template.html", "utf8");
+const sections = sectionFiles.map((file) => fs.readFileSync(file, "utf8").trim()).join("\n\n");
 
-fs.writeFileSync(
-  "sections.js",
-  `// Fichier genere depuis sections/*.html. Relancer: node build-sections.js\nwindow.SPELEOLAVE_SECTIONS = ${JSON.stringify(sections, null, 2)};\n`
-);
+fs.writeFileSync("index.html", template.replace("<!-- SECTIONS -->", sections));

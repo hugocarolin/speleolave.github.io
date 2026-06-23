@@ -1,39 +1,3 @@
-const loadIncludes = async () => {
-  const includeSlots = [...document.querySelectorAll("[data-include]")];
-  const bundledSections = window.SPELEOLAVE_SECTIONS || {};
-
-  await Promise.all(
-    includeSlots.map(async (slot) => {
-      const path = slot.getAttribute("data-include");
-      if (!path) return;
-
-      try {
-        if (bundledSections[path]) {
-          slot.outerHTML = bundledSections[path];
-          return;
-        }
-
-        if (window.location.protocol === "file:") {
-          throw new Error("Chargement local sans sections.js disponible");
-        }
-
-        const response = await fetch(path);
-        if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-        slot.outerHTML = await response.text();
-      } catch (error) {
-        console.error(`Impossible de charger ${path}`, error);
-        slot.innerHTML = `
-          <section class="component-error section-dark">
-            <div class="container">
-              <p>Cette section n’a pas pu être chargée.</p>
-            </div>
-          </section>
-        `;
-      }
-    })
-  );
-};
-
 const initHeader = () => {
   const header = document.querySelector("[data-header]");
   const toggle = document.querySelector(".menu-toggle");
@@ -172,9 +136,8 @@ const scrollToInitialHash = () => {
   });
 };
 
-(async () => {
-  await loadIncludes();
+document.addEventListener("DOMContentLoaded", () => {
   initHeader();
   initLightbox();
   scrollToInitialHash();
-})();
+});
