@@ -256,6 +256,15 @@ main section[id] {
   content: "";
 }
 
+.section-dark .section-code {
+  color: #ffb26f;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.72);
+}
+
+.section-dark .section-code::after {
+  background: #ffb26f;
+}
+
 h1,
 h2,
 h3 {
@@ -951,6 +960,8 @@ textarea:focus {
     right: auto;
     bottom: auto;
     z-index: 1;
+    width: 100%;
+    max-width: 420px;
     margin-top: 34px;
   }
 
@@ -1031,6 +1042,11 @@ textarea:focus {
 
   .hero-actions {
     display: grid;
+  }
+
+  .hero-note {
+    max-width: none;
+    margin-inline: auto;
   }
 
   .button {
