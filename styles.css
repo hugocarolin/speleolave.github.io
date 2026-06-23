@@ -163,13 +163,15 @@ main section[id] {
 
 .site-nav a:hover,
 .site-nav a:focus-visible,
-.site-nav a.is-active {
+.site-nav a.is-active,
+.site-nav a[aria-current] {
   color: var(--white);
 }
 
 .site-nav a:hover::after,
 .site-nav a:focus-visible::after,
-.site-nav a.is-active::after {
+.site-nav a.is-active::after,
+.site-nav a[aria-current]::after {
   transform: scaleX(1);
 }
 
@@ -455,7 +457,10 @@ h3 {
 }
 
 .section-heading h2 {
+  max-width: 13ch;
   font-size: clamp(2.35rem, 5vw, 4.3rem);
+  font-weight: 650;
+  letter-spacing: 0;
 }
 
 .section-dark .section-heading p:not(.section-code),
