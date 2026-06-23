@@ -127,6 +127,39 @@ const initLightbox = () => {
   });
 };
 
+const initMailActions = () => {
+  const mailScheme = "mail" + "to:";
+  const getAddress = (element) => `${element.dataset.mailUser}@${element.dataset.mailDomain}`;
+
+  document.querySelectorAll("[data-mail-action]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.location.href = `${mailScheme}${getAddress(link)}`;
+    });
+  });
+
+  document.querySelectorAll("[data-mail-form]").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const data = new FormData(form);
+      const fullName = [data.get("prenom"), data.get("nom")].filter(Boolean).join(" ");
+      const body = [
+        fullName && `Nom : ${fullName}`,
+        data.get("email") && `Email : ${data.get("email")}`,
+        data.get("telephone") && `Téléphone : ${data.get("telephone")}`,
+        "",
+        data.get("message") || "",
+      ]
+        .filter((line, index) => line || index === 3)
+        .join("\n");
+
+      const subject = encodeURIComponent("Demande de renseignements - Spéléo'Lave");
+      window.location.href = `${mailScheme}${getAddress(form)}?subject=${subject}&body=${encodeURIComponent(body)}`;
+    });
+  });
+};
+
 const scrollToInitialHash = () => {
   if (!window.location.hash) return;
 
@@ -139,5 +172,6 @@ const scrollToInitialHash = () => {
 document.addEventListener("DOMContentLoaded", () => {
   initHeader();
   initLightbox();
+  initMailActions();
   scrollToInitialHash();
 });
